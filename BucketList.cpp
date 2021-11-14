@@ -67,7 +67,7 @@ bool BucketList::contains(const string& s) const {
 		Node* temp = buckets_[hc];
 		while (temp!= nullptr) {
 			if (temp->s_ == s) {
-				cout << "true has this value" << endl;
+				//cout << "true has this value" << endl;
 				return true;
 			}
 			temp = temp->next_; 
@@ -75,75 +75,75 @@ bool BucketList::contains(const string& s) const {
 		cout << "false000 has not this value" << endl;
 		return false;
 	}
-	cout << "false001 has not this value" << endl;
+	//cout << "false001 has not this value" << endl;
 	return false;
 }
 
 void BucketList::insert(const string& s) {
 	// IMPLEMENT ME
-	cout << "insert start" << endl;
+	//cout << "insert start" << endl;
 	bool boolV = contains(s);
-	cout << boolV << ":1exist" << endl;
+	//cout << boolV << ":1exist" << endl;
 	if (!boolV) {
 		cout << "begin insert" << endl;
-		cout << getSize() << "number value" << endl;
+		//cout << getSize() << "number value" << endl;
 		if (getSize() >= MAX_LOAD_FACTOR * c) {
 			c = 2 * c;
 		}
 		cout << c << "current size value" << endl;
 		int hc = h(s) % c;
-		cout << hc << "hc address" << endl;
+		//cout << hc << "hc address" << endl;
 		//桶的尺寸变了需要清空数据重新插入
 		//getSArr();
 		if (buckets_[hc]!=nullptr) { //如果buckets_[hc]分配了内存
-			cout << "2" << endl;
-			cout << buckets_[hc]->next_ << "5555555555555555555555" << endl;
+			//cout << "2" << endl;
+			//cout << buckets_[hc]->next_ << "5555555555555555555555" << endl;
 			Node* first = buckets_[hc]->next_;
 			if (first != nullptr) { //如果buckets_[hc]->next_值不为空
-				cout << "22" << endl;
+				//cout << "22" << endl;
 				if (s.compare(first->s_) < 0) { //如果比第一个值小，则插入在第一个
-					cout << "221" << endl;
+					//cout << "221" << endl;
 					Node* tmpe = new Node;
 					tmpe->s_ = s;
 					tmpe->next_ = first;
 					buckets_[hc]->next_ = tmpe;
 				}else{
-					cout << "222" << endl;
+					//cout << "222" << endl;
 					if (first->next_!=nullptr) {
-						cout << "2221" << endl;
+						//cout << "2221" << endl;
 						bool success = false;
 						while (first->next_!=nullptr) { //如果buckets_[hc]->next_->next_值不为空
-							cout << "22211" << endl; 
+							//cout << "22211" << endl; 
 							Node* second = first->next_;
 							if (s.compare(first->s_) >= 0 && s.compare(second->s_) < 0) {
 								Node* tmpb = new Node;
 								tmpb->s_ = s;
 								tmpb->next_ = second;
 								first->next_ = tmpb;
-								cout << "插入最中间" << endl;
+								//cout << "插入最中间" << endl;
 								success = true;
 								break;
 							}
 							first = first->next_;
 						}
 						if (first->next_==nullptr && !success) { //如果buckets_[hc]->next_->next_值为空
-							cout << "22212" << endl;
+							//cout << "22212" << endl;
 							Node* tmph = new Node;
 							tmph->s_ = s;
 							tmph->next_ =nullptr;
 							first->next_ = tmph;
-							cout << "插入最后面" << endl;
+							//cout << "插入最后面" << endl;
 						}
 					}else { //如果buckets_[hc]->next_->next_值为空,代表只有一个值
-						cout << "2221" << endl;
+						//cout << "2221" << endl;
 						Node* tmpd = new Node;
 						tmpd->s_ = s;
-						tmpd->next_ = first;
-						buckets_[hc]->next_ = tmpd;
+						tmpd->next_ = nullptr;
+						first->next_ = tmpd;
 					}
 				}
 			}else { //如果buckets_[hc]->next_值为空,就代表一个都没有
-				cout << "21" << endl;
+				//cout << "21" << endl;
 				Node* tmpa = new Node;
 				tmpa->s_ = s;
 				first = tmpa;
@@ -151,7 +151,7 @@ void BucketList::insert(const string& s) {
 			}
 		}
 		if(buckets_[hc]==nullptr){ //如果buckets_[hc]没有分配内存
-			cout << "1" << endl;
+			//cout << "1" << endl;
 			buckets_[hc] = new Node;
 			Node* tmp = new Node;
 			tmp->s_ = s;
@@ -164,67 +164,69 @@ void BucketList::insert(const string& s) {
 
 void BucketList::remove(const string& s) {
 	// IMPLEMENT ME
-	cout << "remove start" << endl;
+	//cout << "remove start" << endl;
 	bool boolV = contains(s);
 	cout << boolV << "exist" << endl;
 	if (boolV) {
-		cout << "begin remove" << endl;
+		//cout << "begin remove" << endl;
 		int hc = h(s) % c;
 		Node* temp = buckets_[hc];
 		Node* tmp = temp->next_;
 		if (tmp->s_ == s) { // 如果第一个值就是该值
-			cout << "delete1" << endl;
-			cout << "find this value" << endl;
+			//cout << "delete1" << endl;
+			//cout << "find this value" << endl;
 			if (tmp->next_ != nullptr) { //如果后面还有其他指针
-				cout << "delete11" << endl;
+				//cout << "delete11" << endl;
 				Node* tmpf = tmp;
-				buckets_[hc] = tmp->next_;
+				buckets_[hc]->next_ = tmp->next_;
 				delete tmpf;
 			}else { //如果只有该指针
-				cout << "delete12" << endl;
+				//cout << "delete12" << endl;
 				delete tmp;
 				//delete buckets_[hc];
 				buckets_[hc] = nullptr;
 			}
 		}else{ // 如果第一个值不是该值
-			cout << "delete2" << endl;
-			while (tmp!= nullptr) { //当前指针不为空指针时
-				if (tmp->s_ == s) { 
-					cout << "delete21" << endl;
-					cout << "find this value" << endl;
-					if (tmp->next_!=nullptr) { //如果后面还有其他指针
-						cout << "delete211" << endl;
-						Node* tmpg = tmp->next_;
-						tmp = tmp->next_;
-						delete tmpg;
-					}else { //如果后面没有其他指针
-						cout << "delete212" << endl;
-						delete tmp;
-					}
+			//cout << "delete2" << endl;
+			Node* tmpPrev = temp;
+			if(tmpPrev==nullptr) return;
+			Node* tmpNext = tmpPrev->next_;
+			while (tmpNext!= nullptr) { //当前指针不为空指针时
+				if (tmpNext->s_ == s) { 
+					//cout << "delete21" << endl;
+					//cout << "find this value" << endl;
+					tmpPrev->next_ = tmpNext->next_;
+					delete tmpNext;
 					break;
 				}
-				tmp = tmp->next_;
+				tmpPrev = tmpNext;
+				tmpNext = tmpNext->next_;
 			}
-		}
+		} 
 		number--;
-		cout << "remove success" << endl;
+		//cout << "remove success" << endl;
 	}
 }
 
 string BucketList::toString() const {
 	// IMPLEMENT ME
-	cout << "toString start" << getCap() << endl;
+	//cout << "toString start" << getCap() << endl;
 	string res;
 	for (int i = 0; i < getCap(); i++) {
 		Node* tmp = buckets_[i];
-		res += to_string(i) + " ";
+		res += to_string(i);
 		if (tmp!=nullptr) {
-			while (tmp->next_!=nullptr) {
-				res += tmp->next_->s_ + " ";
-				tmp->next_ = tmp->next_->next_;
+	 		while (tmp!=nullptr) {
+				if(tmp==buckets_[i]){
+				}else{
+					res += " " + tmp->s_;
+				}
+				tmp = tmp->next_;
 			}
 		}
-		res += "\n";
+		if(i!=getCap()-1){
+			res += "\n";
+		}
 	}
 	return res; // dummy
 }
@@ -245,7 +247,7 @@ int BucketList::h(const string& s) const {
 
 int BucketList::getSize() const {
 	// IMPLEMENT ME
-	cout << "getSize start" << endl;
+	//cout << "getSize start" << endl;
 	return number; // dummy
 	int aaa = 0;
 	for (int i = 0; i < getCap(); i++) {
@@ -257,33 +259,13 @@ int BucketList::getSize() const {
 			}
 		}
 	}
-	cout << aaa << "aaaaaaa value!!!!!!!!!" << endl;
+	//cout << aaa << "aaaaaaa value!!!!!!!!!" << endl;
 	return aaa; // dummy
 }
 
 int BucketList::getCap() const {
 	// IMPLEMENT ME
-	cout << "getCap start" << endl;
+	//cout << "getCap start" << endl;
 	return c; // dummy
 }
 
-string BucketList::getSArr() const{
-	cout << getSize() << getCap() << "字符串数量和桶的数量";
-	int arrSize = getSize();
-	string arr;
-	if (arrSize == 0) {
-		return arr;
-	}else if(arrSize>0){
-		for (int i = 0; i < getCap(); i++) {
-			Node* tmp = buckets_[i];
-			if (tmp != nullptr) {
-				while (tmp->next_ != nullptr) {
-					arr += tmp->next_->s_ + "";
-					tmp->next_ = tmp->next_->next_;
-				}
-			}
-		}
-		cout << arr;
-		return arr;
-	}
-}
