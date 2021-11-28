@@ -12,7 +12,7 @@ using std::endl;
 
 template <class T>
 struct LNode {
-	int data_;
+	T data_;
 	LNode<T>* next_;
 	LNode<T>* prev_;
 };
@@ -44,9 +44,26 @@ public:
 		cout << endl;
 	}
 
+	LinkedList& operator<<(const LinkedList& other){
+		LNode<T>* tmp = head_;
+		while (tmp != nullptr) {
+			cout << tmp->data_ << " ";
+			tmp = tmp->next_;
+		}
+		cout << endl;
+	}
+
 	// find t from the list, returning a pointer to that node.
 	// if not found, return nullptr
 	LNode<T>* find(T t) const {
+		LNode<T>* tmp = head_;
+		while (tmp != nullptr) {
+			if (tmp->data_ == t) return tmp;
+			tmp = tmp->next_;
+		}
+		return tmp;
+	}
+	LinkedList& operator==(const LinkedList& other) {
 		LNode<T>* tmp = head_;
 		while (tmp != nullptr) {
 			if (tmp->data_ == t) return tmp;
