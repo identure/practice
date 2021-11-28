@@ -44,7 +44,7 @@ public:
 		cout << endl;
 	}
 
-	LinkedList& operator<<(const LinkedList& other){
+	void operator<<(T t){
 		LNode<T>* tmp = head_;
 		while (tmp != nullptr) {
 			cout << tmp->data_ << " ";
@@ -63,7 +63,7 @@ public:
 		}
 		return tmp;
 	}
-	LinkedList& operator==(const LinkedList& other) {
+	LNode<T>* operator==(T t) {
 		LNode<T>* tmp = head_;
 		while (tmp != nullptr) {
 			if (tmp->data_ == t) return tmp;
